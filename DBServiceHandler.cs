@@ -4,10 +4,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DBServer
+namespace DBServer /**/
 {
-    class DBServiceHandler : DBService.Iface
+    class DBServiceHandler : DBService.Iface /*Добавить класс реализующий интерфейс
+    Iface и реализовать его методы*/
     {
+        public DBServiceHandler()
+        {
+            global = GlobalServer.getInstance();
+        }
+        private GlobalServer global;
+        List<Row> DATA = new List<Row>();
         bool DBService.ISync.addRow(Row row)
         {
             return true;
@@ -25,6 +32,7 @@ namespace DBServer
 
         List<Row> DBService.ISync.listRow()
         {
+            /*
             List<Row> list = new List<Row>();
             Row row = new Row();
             row.ID = 1;
@@ -32,6 +40,21 @@ namespace DBServer
             row.Password = "zahar";
             list.Add(row);
             return list;
+            */
+            var cmd = global.getCmd();
+            cmd.CommandText = "select * from RegistrationUsers";
+            var ret = cmd.ExecuteReader();
+            //textbox.Text = "";
+            DATA.Clear();
+            while (ret.Read())
+            {
+                int id = ret.GetInt32(0);
+                String log_db = ret.GetString(1);
+                String pass_db = ret.GetString(2);
+                //textbox.Text = textbox.Text + id + " " + log_db + " " + pass_db + "\n";
+                DATA.Add(new Row(id, log_db, pass_db));
+            }
+            return DATA;
         }
     }
 }

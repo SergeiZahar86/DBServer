@@ -10,7 +10,8 @@ namespace DBServer
 {
     class Program
     {
-        static void Main(string[] args)
+        
+        static void Main(string[] args)/*Добавить в main необходимые процедуры*/
         {
             DBServiceHandler service = new DBServiceHandler();
             DBService.Processor processor = new DBService.Processor(service);

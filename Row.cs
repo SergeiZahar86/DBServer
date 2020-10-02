@@ -25,7 +25,22 @@ public partial class Row : TBase
   private string _Login;
   private string _Password;
 
-  public int ID
+
+
+    public Row(int Id, string Login, string Password)
+    {
+        this.ID = Id;
+        this.Login = Login;
+        this.Password = Password;
+    }
+
+
+
+
+
+
+
+    public int ID
   {
     get
     {
