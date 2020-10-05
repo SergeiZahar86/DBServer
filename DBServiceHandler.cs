@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Data.Sqlite;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,12 +10,13 @@ namespace DBServer /**/
     class DBServiceHandler : DBService.Iface /*Добавить класс реализующий интерфейс
     Iface и реализовать его методы*/
     {
-        public DBServiceHandler()
+
+        SqliteConnection conn;
+
+        public DBServiceHandler(SqliteConnection conn)
         {
-            global = GlobalServer.getInstance();
+            this.conn = conn;
         }
-        private GlobalServer global;
-        List<Row> DATA = new List<Row>();
         bool DBService.ISync.addRow(Row row)
         {
             return true;
@@ -32,29 +34,32 @@ namespace DBServer /**/
 
         List<Row> DBService.ISync.listRow()
         {
-            /*
-            List<Row> list = new List<Row>();
-            Row row = new Row();
-            row.ID = 1;
-            row.Login = "sergei";
-            row.Password = "zahar";
-            list.Add(row);
-            return list;
-            */
-            var cmd = global.getCmd();
-            cmd.CommandText = "select * from RegistrationUsers";
-            var ret = cmd.ExecuteReader();
-            //textbox.Text = "";
-            DATA.Clear();
-            while (ret.Read())
+            List<Row> rows = new List<Row>();
+            try
             {
-                int id = ret.GetInt32(0);
-                String log_db = ret.GetString(1);
-                String pass_db = ret.GetString(2);
-                //textbox.Text = textbox.Text + id + " " + log_db + " " + pass_db + "\n";
-                DATA.Add(new Row(id, log_db, pass_db));
+           var cmd = this.conn.CreateCommand();
+           cmd.CommandText = "select * from RegistrationUsers";
+           var ret = cmd.ExecuteReader();
+           //textbox.Text = "";
+           while (ret.Read())
+           {
+                Row row = new Row();
+                row.ID = ret.GetInt32(0);
+                row.Login = ret.GetString(1);
+                row.Password = ret.GetString(2);
+                rows.Add(row);
             }
-            return DATA;
+           }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return rows;
+        }
+
+        public void addUser(string log, string password)
+        {
+           //throw new NotImplementedException();
         }
     }
 }
