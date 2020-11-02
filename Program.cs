@@ -12,7 +12,7 @@ namespace DBServer
         static void Main(string[] args)/*Добавить в main необходимые процедуры*/
         {
 
-            conn = new SqliteConnection("Data Source= Registration.db");
+            conn = new SqliteConnection(@"Data Source= ..\..\Registration.db");
             conn.Open();
             DBServiceHandler service = new DBServiceHandler(conn);
             DBService.Processor processor = new DBService.Processor(service);

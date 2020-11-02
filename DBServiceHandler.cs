@@ -37,19 +37,19 @@ namespace DBServer /**/
             List<Row> rows = new List<Row>();
             try
             {
-           var cmd = this.conn.CreateCommand();
-           cmd.CommandText = "select * from RegistrationUsers";
-           var ret = cmd.ExecuteReader();
-           //textbox.Text = "";
-           while (ret.Read())
-           {
-                Row row = new Row();
-                row.ID = ret.GetInt32(0);
-                row.Login = ret.GetString(1);
-                row.Password = ret.GetString(2);
-                rows.Add(row);
+                var cmd = this.conn.CreateCommand();
+                cmd.CommandText = "select * from RegistrationUsers";
+                var ret = cmd.ExecuteReader();
+                //textbox.Text = "";
+                while (ret.Read())
+                {
+                    Row row = new Row();
+                    row.ID = ret.GetInt32(0);
+                    row.Login = ret.GetString(1);
+                    row.Password = ret.GetString(2);
+                    rows.Add(row);
+                }
             }
-           }
             catch(Exception ex)
             {
                 Console.WriteLine(ex.Message);
